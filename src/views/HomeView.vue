@@ -9,8 +9,9 @@
     class="demo-ruleForm"
   >
 
-  <el-form-item label="Имя" prop="firstName">
+  <el-form-item label="Имя" prop="firstName" class="is-error is-required">
       <el-input v-model.string="ruleForm.firstName" />
+      <div class="el-form-item__error">Имя обязательно для заполнения</div>
     </el-form-item>
 
   <el-form-item label="Фамилия" prop="secondName">
@@ -26,7 +27,7 @@
       <!-- pattern="[0-9]{1}-[0-9]{3}-[0-9]{2}-[0-9]{2}-[0-9]{3}" -->
     </el-form-item>
 
-  <el-form-item label="Age" prop="age">
+  <el-form-item label="Возраст" prop="age">
       <el-input v-model.number="ruleForm.age" />
     </el-form-item>
 
@@ -51,9 +52,10 @@
 
     <el-form-item>
       <el-button  class="form-button__left" type="primary" @click="submitForm(ruleFormRef)">
-        Submit
+        Создать
       </el-button>
-      <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+      <el-button>Отменить</el-button>
+      <!-- @click="resetForm(ruleFormRef)" -->
     </el-form-item>
   </el-form>
 
@@ -62,7 +64,7 @@
     title="Success"
     width="500"
   >
-    <img :src="imageSrc" alt="Описание картинки" class="dialog__img">
+      <img src="@/assets/thankYouImg.jpg" alt="Описание изображения" class="dialog__img">
     <template #footer>
       <div class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">
@@ -74,20 +76,17 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import axios from 'axios'
 
-const imageUrl = ref('https://downloader.disk.yandex.ru/preview/b5562c547c0bec5de951cefd23ad4ce031cc49015e7eb59362574ab7a75f1c9e/663b683d/C8fZFnWlvlnde0rPWj-1e8Xg4OzEVbf7D2I35oNkO-P-k3enRQGCZlunT5e-2zBuV8tp4Z8FrOFNh-YcWR7X1Q%3D%3D?uid=0&filename=thank-you-wishes-for-friends1-600x400.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=2048x2048');
-const imageSrc = computed(() => imageUrl.value);
-
 const dialogVisible = ref(false)
-
 const ruleFormRef = ref<FormInstance>()
 
 const checkAge = (rule: any, value: any, callback: any) => {
   if (!value) {
-    return callback(new Error('Please input the age'))
+    return callback()
+    // return callback(new Error('Please input the age'))
   }
   setTimeout(() => {
     if (!Number.isInteger(value)) {
@@ -104,7 +103,8 @@ const checkAge = (rule: any, value: any, callback: any) => {
 
 const checkEmail = (rule: any, value: any, callback: any) => {
   if (!value) {
-    return callback(new Error('Please input the number'))
+    return callback()
+    // return callback(new Error('Please input the number'))
   }
   setTimeout(() => {
       const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;  
@@ -136,7 +136,8 @@ const checkPhone = (rule: any, value: any, callback: any) => {
 
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('Please input the password'))
+    callback()
+    // new Error('Please input the password')
   } else {
     if (ruleForm.checkPass !== '') {
       if (!ruleFormRef.value) return
@@ -147,7 +148,8 @@ const validatePass = (rule: any, value: any, callback: any) => {
 }
 const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('Please input the password again'))
+    callback()
+    // new Error('Please input the password again')
   } else if (value !== ruleForm.pass) {
     callback(new Error("Two inputs don't match!"))
   } else {
@@ -168,30 +170,30 @@ const ruleForm = reactive({
 
 const rules = reactive<FormRules<typeof ruleForm>>({
   firstName: [
-    { required: true, message: 'Please input first name', trigger: 'blur' },
-    { min: 3, max: 10, message: 'Length should be 3 to 10', trigger: 'blur' },
+    // { required: true, message: 'Please input first name', trigger: 'blur' },
+    // { min: 3, max: 10, message: 'Length should be 3 to 10', trigger: 'blur' },
   ],
   secondName: [
     { required: true, message: 'Please input second name', trigger: 'blur' },
     { min: 3, max: 15, message: 'Length should be 3 to 15', trigger: 'blur' },
   ],
   email: [
-    { required: true, message: 'Please input email', trigger: 'blur' },
-    { min: 3, max: 15, message: 'Length should be 3 to 15', trigger: 'blur' },
-    { validator: checkEmail, required: true, trigger: 'blur' }
+    // { required: true, message: 'Please input email', trigger: 'blur' },
+    // { min: 3, max: 15, message: 'Length should be 3 to 15', trigger: 'blur' },
+    { validator: checkEmail, trigger: 'blur' }
   ],
   phoneNumber: [
     { validator: checkPhone, trigger: 'blur' }
   ],
   age: [
-    { validator: checkAge, required: true, trigger: 'blur' },
+    { validator: checkAge, trigger: 'blur' },
     { type: 'number', message: 'Age must be a number' },
   ],
   gender: [
-    { required: true, message: 'Please choose gender', trigger: 'change' }
+    { message: 'Please choose gender', trigger: 'change' }
   ],
-  pass: [{ validator: validatePass, required: true, trigger: 'blur' }],
-  checkPass: [{ validator: validatePass2, required: true, trigger: 'blur' }],
+  pass: [{ validator: validatePass, trigger: 'blur' }],
+  checkPass: [{ validator: validatePass2, trigger: 'blur' }],
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
@@ -209,10 +211,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
   })
 }
 
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
-}
+// const resetForm = (formEl: FormInstance | undefined) => {
+//   if (!formEl) return
+//   formEl.resetFields()
+// }
 </script>
 
 <style lang="css">
