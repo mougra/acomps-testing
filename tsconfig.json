@@ -1,34 +1,11 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "target": "esnext",
-    "useDefineForClassFields": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "jsx": "preserve",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "lib": ["esnext", "dom", "dom.iterable"],
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "paths": {
-      "@/*": ["./src/*"]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
     },
-    "types": ["vite/client", "element-plus/global", "sortablejs"],
-    "noUncheckedIndexedAccess": true
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "components.d.ts",
-    "vite.config.*"
-  ],
-  "exclude": ["dist", "node_modules"]
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
 }
